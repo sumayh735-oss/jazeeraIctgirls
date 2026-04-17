@@ -25,7 +25,10 @@ require("./src/config/google")(passport);
 //////////////////////////////////////////////////
 // MIDDLEWARE
 //////////////////////////////////////////////////
-app.use(cors());
+app.use(cors({
+  origin: "https://jazeera-ictgirls.vercel.app",
+  credentials: true
+}));
 app.use(express.json());
 
 app.use(
