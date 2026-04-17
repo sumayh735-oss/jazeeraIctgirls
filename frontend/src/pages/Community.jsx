@@ -3,7 +3,8 @@ import { socket } from "../socket";
 import CreatePost from "../components/CreatePost";
 import PostCard from "../components/PostCard";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API = import.meta.env.VITE_API_URL || "/api";
 
@@ -165,6 +166,7 @@ export default function Community() {
             refresh={fetchPosts}
           />
         ))}
+         <ToastContainer />
       </div>
     </div>
   );
