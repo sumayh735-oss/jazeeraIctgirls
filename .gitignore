@@ -1,0 +1,39 @@
+# Dependencies (never commit these!)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environment (secrets!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+frontend/dist/
+backend/dist/
+backend/uploads/
+
+# Logs & temp
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: Remove lock files if you want (many teams do this)
+# package-lock.json
+# yarn.lock
