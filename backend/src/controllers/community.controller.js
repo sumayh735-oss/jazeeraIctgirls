@@ -114,56 +114,25 @@ exports.getPosts = async (req, res) => {
 //////////////////////////////////////////////////
 exports.createPost = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+    const { content } = req.body;
+    const authorId = req.user.id; // 🔥 use authorId
+
+    if (!content) {
+      return res.status(400).json({ message: "Content required" });
     }
 
-    let image = null;
-    let video = null;
-
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file);
-
-      if (result.resource_type === "image") {
-        image = result.secure_url;
-      } else {
-        video = result.secure_url;
+    await sequelize.query(
+      `INSERT INTO posts (content, authorId, createdAt, updatedAt)
+       VALUES (?, ?, NOW(), NOW())`,
+      {
+        replacements: [content, authorId],
       }
-    }
+    );
 
-    if (!req.body.content && !req.file) {
-      return res.status(400).json({
-        message: "Post must have content or file",
-      });
-    }
-
-    const title = req.body.title || "Untitled";
-
-    await sequelize.query(`
-      INSERT INTO posts (title, content, authorId, image, video, createdAt)
-      VALUES (?, ?, ?, ?, ?, NOW())
-    `, {
-      replacements: [
-        title,
-        req.body.content,
-        req.user.id,
-        image,
-        video
-      ]
-    });
-
-    // ✅ EMIT INSIDE TRY
-    socket.getIO().emit("newPost", {
-      content: req.body.content,
-      image,
-      video
-    });
-
-    res.json({ message: "Post created successfully" });
-
+    res.json({ success: true });
   } catch (err) {
-    console.error("CREATE POST ERROR:", err);
-    res.status(500).json({ message: err.message });
+    console.log("CREATE POST ERROR:", err);
+    res.status(500).json({ message: "Post failed" });
   }
 };
 
@@ -174,45 +143,51 @@ exports.createPost = async (req, res) => {
 //////////////////////////////////////////////////
 // ❤️ REACT POST (FIXED)
 //////////////////////////////////////////////////
+// controllers/community.controller.js
+
 exports.reactPost = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { postId } = req.params; // 🔥 FIX (id → postId)
     const { type } = req.body;
 
+    if (!type) {
+      return res.status(400).json({ message: "Reaction type required" });
+    }
+
+    console.log("React:", postId, type, req.user.id);
+
+    // 👉 DELETE haddii hore u jiray
     const [existing] = await sequelize.query(`
-      SELECT * FROM reactions WHERE postId = ? AND userId = ?
+      SELECT * FROM reactions 
+      WHERE postId=? AND userId=?
     `, {
-      replacements: [postId, req.user.id]
+      replacements: [postId, req.user.id],
     });
 
     if (existing.length > 0) {
-      // 🔥 UPDATE instead of delete
       await sequelize.query(`
-        UPDATE reactions SET type = ? WHERE postId = ? AND userId = ?
+        DELETE FROM reactions 
+        WHERE postId=? AND userId=?
       `, {
-        replacements: [type, postId, req.user.id]
+        replacements: [postId, req.user.id],
       });
     } else {
       await sequelize.query(`
         INSERT INTO reactions (postId, userId, type)
         VALUES (?, ?, ?)
       `, {
-        replacements: [postId, req.user.id, type]
+        replacements: [postId, req.user.id, type],
       });
     }
 
-    socket.getIO().emit("reactionPopup", {
-      user: req.user.fullName,
-      type
-    });
-
-    res.json({ message: "Reacted" });
+    res.json({ success: true });
 
   } catch (err) {
-    console.error(err);
+    console.error("REACTION ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 };
+
 
 //////////////////////////////////////////////////
 // 💬 ADD COMMENT

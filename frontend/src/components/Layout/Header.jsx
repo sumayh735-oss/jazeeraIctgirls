@@ -17,6 +17,11 @@ console.log("AUTH DEBUG:", { user, logout, isAuthenticated });
     { path: '/about', label: 'About' },
     { path: '/community', label: 'Community' },
     { path: '/blog', label: 'Blog' },
+    { path: '/innovators', label: 'Innovators' },
+    { path: '/events', label: 'Events' },
+
+
+  
   ];
 
 

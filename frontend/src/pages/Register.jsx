@@ -26,7 +26,7 @@ const Register = () => {
 
     if (res.success) {
       await login(formData.email, formData.password);
-      navigate("/dashboard");
+      navigate("/");
     } else {
       setError(res.message);
     }
@@ -61,24 +61,30 @@ const Register = () => {
         {error && <p className="error">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-          <input
-            name="fullName"
-            placeholder="Your full name"
-            onChange={handleChange}
-          />
+<input
+  name="fullName"
+  placeholder="Your full name"
+  onChange={handleChange}
+  className="w-full p-3 mb-3 border rounded-full outline-none 
+  transition duration-300 hover:shadow-md hover:border-blue-400 focus:ring-2 focus:ring-blue-500"
+/>
 
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-          />
+<input
+  name="email"
+  placeholder="Email"
+  onChange={handleChange}
+  className="w-full p-3 mb-3 border rounded-full outline-none 
+  transition duration-300 hover:shadow-md hover:border-blue-400 focus:ring-2 focus:ring-blue-500"
+/>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-          />
+<input
+  type="password"
+  name="password"
+  placeholder="Password"
+  onChange={handleChange}
+  className="w-full p-3 mb-3 border rounded-full outline-none 
+  transition duration-300 hover:shadow-md hover:border-blue-400 focus:ring-2 focus:ring-blue-500"
+/>
 
           <button type="submit" className="submit-btn">
             Join Now

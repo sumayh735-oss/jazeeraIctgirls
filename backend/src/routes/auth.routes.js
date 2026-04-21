@@ -5,7 +5,7 @@ const { body } = require('express-validator');
 // IMPORT CONTROLLER (SAX)
 const authController = require('../controllers/auth.controller');
 const authMiddleware = require('../middleware/auth.middleware');
-
+<Route path="/google-success" element={<GoogleSuccess />} />
 // Validation
 const registerValidation = [
   body('email').isEmail(),

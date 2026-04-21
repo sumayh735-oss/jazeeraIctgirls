@@ -1,57 +1,74 @@
-const User = require("../models/User");
+const express = require('express');
+const router = express.Router();
+const { body } = require('express-validator');
+const passport = require("passport");
 
-// REGISTER
-const register = async (req, res) => {
-  try {
-    const { fullName, email, password, role } = req.body;
+// IMPORT CONTROLLER
+const authController = require('../controllers/auth.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
-    console.log("BODY RECEIVED:", req.body);
+// Validation
+const registerValidation = [
+  body('email').isEmail(),
+  body('password').isLength({ min: 6 }),
+  body('fullName').notEmpty(),
+  body('phone').optional(),
+  body('studentId').optional(),
+  body('role').optional().isIn(['student', 'mentor'])
+];
 
-    if (!fullName || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields"
-      });
-    }
+const loginValidation = [
+  body('email').isEmail(),
+  body('password').notEmpty()
+];
 
-    const existingUser = await User.findOne({ where: { email } });
+// ================= ROUTES =================
 
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "Email already exists"
-      });
-    }
+// ✅ FIXED REGISTER
+router.post("/register", authController.register);
 
+// LOGIN
+router.post('/login', loginValidation, authController.login);
 
+// ME
+router.get('/me', authMiddleware, authController.getMe);
 
-    const user = await User.create({
-      fullName: fullName.trim(),
-      email: email.toLowerCase(),
-      password,
-      role: role || "student" // 🔥 IMPORTANT FIX
-    });
+// LOGOUT
+router.post('/logout', authMiddleware, authController.logout);
 
-    return res.status(201).json({
-      success: true,
-      user
-    });
+//////////////////////////////////////////////////
+// ✅ GOOGLE LOGIN (ADDED)
+//////////////////////////////////////////////////
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
 
-  } catch (error) {
-    console.log("REGISTER ERROR FULL:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: error.message
-    });
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false,
+  }),
+  (req, res) => {
+    res.redirect("http://localhost:3000/dashboard");
   }
-  exports.getMe = async (req, res) => {
-  try {
-    res.json({ user: req.user });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-};
+);
 
-module.exports = { register };
+//////////////////////////////////////////////////
+// ✅ FORGOT PASSWORD (ADDED)
+//////////////////////////////////////////////////
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email required" });
+  }
+
+  // placeholder (waa shaqeynaya frontend-ka)
+  res.json({ message: "Password reset link sent!" });
+});
+
+module.exports = router;

@@ -1,40 +1,34 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const GoogleSuccess = () => {
+export default function GoogleSuccess() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(window.location.search);
 
     const token = params.get("token");
     const name = params.get("name");
     const email = params.get("email");
 
     if (token) {
-      // save login
+      // ✅ SAVE TOKEN
       localStorage.setItem("token", token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          fullName: name,
-          email: email,
-        })
-      );
 
-      // redirect
-      navigate("/dashboard");
+      // ✅ CREATE USER OBJECT (VERY IMPORTANT)
+      const user = {
+        fullName: name || "Google User",
+        email: email || "",
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // 🔥 REDIRECT HOME
+      navigate("/");
     } else {
       navigate("/login");
     }
   }, []);
 
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <h2 className="text-xl font-semibold">Signing you in with Google...</h2>
-    </div>
-  );
-};
-
-export default GoogleSuccess;
+  return <div className="text-center mt-20">Logging in...</div>;
+}

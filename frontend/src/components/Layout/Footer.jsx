@@ -14,16 +14,16 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: FaFacebookF, label: 'Facebook', href: 'https://facebook.com/jazeeraictgirls' },
-    { icon: FaLinkedinIn, label: 'LinkedIn', href: 'https://linkedin.com/company/jazeeraictgirls' },
-    { icon: FaTiktok, label: 'TikTok', href: 'https://tiktok.com/@jazeeraictgirls' },
+    { icon: FaFacebookF, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61571354710713' },
+    { icon: FaLinkedinIn, label: 'LinkedIn', href: 'https://www.linkedin.com/in/jazeera-ict-girls-974711404/' },
+    { icon: FaTiktok, label: 'TikTok', href: 'https://www.tiktok.com/@juictgirls' },
   ];
 
   const quickLinks = [
     { name: 'About Us', path: '/about' },
     { name: 'Community', path: '/community' },
     { name: 'Blog', path: '/blog' },
-    { name: 'Courses', path: '/courses' },
+    { name: 'innovators', path: 'innovators' },
   ];
 
   const learningPaths = [
@@ -134,9 +134,11 @@ const Footer = () => {
                   <div className="w-12 h-12 rounded-full bg-white border border-primary-navy/10 flex items-center justify-center">
                     <HiMail className="text-primary-tech text-2xl" />
                   </div>
-                  <a href="mailto:ictgirls@aljazeera.edu" className="hover:text-primary-tech transition">
-                    ictgirls@aljazeera.edu
-                  </a>
+                           <a href="mailto:juictgirl@gmail.com"
+                           className="text-primary-tech font-semibold hover:underline"
+                          >
+  juictgirl@gmail.com
+</a>
                 </div>
 
                 <div className="flex gap-5">

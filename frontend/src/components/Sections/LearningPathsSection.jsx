@@ -28,7 +28,22 @@ const paths = [
     desc: 'Create Android & iOS apps using Flutter or React Native.',
     status: 'Coming Soon',
   },
-  
+
+  // ✅ NEW: AI
+  {
+    icon: HiSparkles,
+    title: 'Artificial Intelligence',
+    desc: 'Explore machine learning, deep learning, and build smart AI-powered applications.',
+    status: 'Coming Soon',
+  },
+
+  // ✅ NEW: Cybersecurity
+  {
+    icon: HiChartBar, // waxaad beddeli kartaa icon kale haddii aad rabto
+    title: 'Cybersecurity',
+    desc: 'Learn ethical hacking, network security, and how to protect systems from cyber threats.',
+    status: 'Coming Soon',
+  },
 ];
 
 const LearningPathsSection = () => {

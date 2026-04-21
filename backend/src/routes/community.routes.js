@@ -18,13 +18,15 @@ const {
   markAsRead
 } = require("../controllers/community.controller");
 
+console.log("reactPost:", reactPost); // debug
+
 //////////////////////////////////////////////////
 // POSTS
 //////////////////////////////////////////////////
 
 router.get("/posts", getPosts);
 router.post("/posts", verifyToken, createPost);
-router.post("/posts/:postId/react", verifyToken, reactPost);
+router.post("/posts/:postId/react", verifyToken, reactPost); // ✅ FIXED
 router.put("/posts/:postId", verifyToken, editPost);
 router.delete("/posts/:postId", verifyToken, deletePost);
 
@@ -38,7 +40,6 @@ router.post("/posts/:postId/comments/:commentId/reply", verifyToken, addReply);
 router.put("/comments/:commentId", verifyToken, editComment);
 router.delete("/comments/:commentId", verifyToken, deleteComment);
 
-// 🔥 IMPORTANT (fix 404)
 router.post("/comments/:commentId/react", verifyToken, reactComment);
 
 //////////////////////////////////////////////////

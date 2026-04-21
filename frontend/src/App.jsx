@@ -15,6 +15,10 @@ import GoogleSuccess from "./pages/GoogleSuccess";
 import BlogDetails from "./pages/BlogDetails";
 import Shop from "./pages/Shop";
 import Categories from "./pages/Categories";
+import Events from "./pages/Events";
+import Innovators from "./pages/Innovators";
+import EventDetails from "./pages/eventDetails";
+import Contact from "./pages/Contact";
 
 //////////////////////////////////////////////////
 // 🔒 Protected Route
@@ -53,9 +57,13 @@ function App() {
 
               {/* BLOG */}
               <Route path="blog" element={<Blog />} />
-              <Route path="blog/:id" element={<BlogDetails />} />
+             <Route path="/innovators/:id" element={<BlogDetails />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/category/:name" element={<Categories/>} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/innovators" element={<Innovators />} />
+              <Route path="/events/:id" element={<EventDetails />} />
+             <Route path="/contact" element={<Contact />} />
 
               {/* PROTECTED */}
               <Route
